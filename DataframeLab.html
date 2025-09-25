@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Luis G." />
+<meta name="author" content="Luis G.data" />
 
 
 <title>Dataframes - In Class lab</title>
@@ -350,7 +350,7 @@ display: none;
 
 
 <h1 class="title toc-ignore">Dataframes - In Class lab</h1>
-<h4 class="author">Luis G.</h4>
+<h4 class="author">Luis G.data</h4>
 <h4 class="date">DATA 2401</h4>
 
 </div>
@@ -390,23 +390,68 @@ directory in RStudio! The working directory is automatically set to the
 repository location. (You can use <code>getwd()</code> to confirm
 this)</p>
 <ul>
-<li><p>Use the glimpse function to look at the loaded data</p></li>
-<li><p>Create a variable <code>org</code> that contains the
-<code>organization</code> column of the dataset</p></li>
-<li><p>Confirm that the “organization” column is a vector using the
-<code>is.vector()</code> function. (This is a useful debugging tip if
-you hit errors later!)</p></li>
+<li>Use the glimpse function to look at the loaded data</li>
 </ul>
+<pre class="r"><code>glimpse(grants)</code></pre>
+<pre><code>## Rows: 255
+## Columns: 9
+## $ grant_title        &lt;chr&gt; &quot;New Mexico Business Roundtable&quot;, &quot;LA NSC Match&quot;, &quot;…
+## $ id                 &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …
+## $ organization       &lt;chr&gt; &quot;New Mexico Business Roundtable for Educational Exc…
+## $ total_amount       &lt;dbl&gt; 5000, 27727, 36018, 38420, 50000, 50000, 50000, 515…
+## $ group              &lt;chr&gt; &quot;low&quot;, &quot;low&quot;, &quot;low&quot;, &quot;low&quot;, &quot;low&quot;, &quot;low&quot;, &quot;low&quot;, &quot;l…
+## $ `Grant start date` &lt;chr&gt; &quot;2/4/10&quot;, &quot;8/3/09&quot;, &quot;11/12/09&quot;, &quot;3/11/10&quot;, &quot;10/12/0…
+## $ start_month        &lt;dbl&gt; 2, 8, 11, 3, 10, 6, 9, 10, 11, 10, 11, 11, 11, 11, …
+## $ start_day          &lt;dbl&gt; 4, 3, 12, 11, 12, 30, 24, 29, 16, 28, 2, 2, 2, 2, 2…
+## $ start_year         &lt;dbl&gt; 2010, 2009, 2009, 2010, 2009, 2009, 2009, 2009, 200…</code></pre>
+<ul>
+<li>Create a variable <code>org</code> that contains the
+<code>organization</code> column of the dataset</li>
+</ul>
+<pre class="r"><code>org &lt;- grants$organization</code></pre>
+<ul>
+<li>Confirm that the “organization” column is a vector using the
+<code>is.vector()</code> function. (This is a useful debugging tip if
+you hit errors later!)</li>
+</ul>
+<pre class="r"><code>is.vector(org)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 <p>Now you can ask some interesting questions about the dataset:</p>
 <ul>
-<li><p>What was the mean grant value?</p></li>
-<li><p>What was the dollar amount of the largest grant?</p></li>
-<li><p>What was the dollar amount of the smallest grant?</p></li>
-<li><p>Which organization received the largest grant?</p></li>
-<li><p>Which organization received the smallest grant?</p></li>
-<li><p>How many grants were awarded in 2010?</p></li>
-<li><p>How much was awarded in 2010?</p></li>
+<li>What was the mean grant value?</li>
 </ul>
+<pre class="r"><code>mean(grants$total_amount)</code></pre>
+<pre><code>## [1] 2600197</code></pre>
+<ul>
+<li>What was the dollar amount of the largest grant?</li>
+</ul>
+<pre class="r"><code>max(grants$total_amount)</code></pre>
+<pre><code>## [1] 1e+08</code></pre>
+<ul>
+<li>What was the dollar amount of the smallest grant?</li>
+</ul>
+<pre class="r"><code>min(grants$total_amount)</code></pre>
+<pre><code>## [1] 5000</code></pre>
+<ul>
+<li>Which organization received the largest grant?</li>
+</ul>
+<pre class="r"><code>grants$organization[grants$total_amount==max(grants$total_amount)]</code></pre>
+<pre><code>## [1] &quot;Hillsborough County Public Schools&quot;</code></pre>
+<ul>
+<li>Which organization received the smallest grant?</li>
+</ul>
+<pre class="r"><code>grants$organization[grants$total_amount==min(grants$total_amount)]</code></pre>
+<pre><code>## [1] &quot;New Mexico Business Roundtable for Educational Excellence&quot;</code></pre>
+<ul>
+<li>How many grants were awarded in 2010?</li>
+</ul>
+<pre class="r"><code>length(grants$total_amount[])</code></pre>
+<pre><code>## [1] 255</code></pre>
+<ul>
+<li>How much was awarded in 2010?</li>
+</ul>
+<pre class="r"><code>sum(grants$total_amount[grants$start_year == 2010])</code></pre>
+<pre><code>## [1] 29196031</code></pre>
 </div>
 <div id="working-with-built-in-data-sets" class="section level1">
 <h1>Working with built-in data sets</h1>
@@ -425,24 +470,86 @@ can find that out using)</p>
 argument to the <code>data.frame()</code> function to convert it a data
 frame.</p>
 <p>Do this, storing the result in a new variable</p>
+<pre class="r"><code>(USPE_data &lt;- data.frame(USPersonalExpenditure))</code></pre>
+<pre><code>##                      X1940  X1945 X1950 X1955 X1960
+## Food and Tobacco    22.200 44.500 59.60  73.2 86.80
+## Household Operation 10.500 15.500 29.00  36.5 46.20
+## Medical and Health   3.530  5.760  9.71  14.0 21.10
+## Personal Care        1.040  1.980  2.45   3.4  5.40
+## Private Education    0.341  0.974  1.80   2.6  3.64</code></pre>
 <p>What are the current column names of your dataframe?</p>
+<pre class="r"><code>names(USPE_data)</code></pre>
+<pre><code>## [1] &quot;X1940&quot; &quot;X1945&quot; &quot;X1950&quot; &quot;X1955&quot; &quot;X1960&quot;</code></pre>
 <p>Consider: why are they so strange? (Think about whether you could use
 a number like 1940 with dollar notation!)</p>
 <p>What are the current row names of your dataframe?</p>
+<pre class="r"><code>row.names(USPE_data)</code></pre>
+<pre><code>## [1] &quot;Food and Tobacco&quot;    &quot;Household Operation&quot; &quot;Medical and Health&quot; 
+## [4] &quot;Personal Care&quot;       &quot;Private Education&quot;</code></pre>
 <p>Add a column “Category” to your data frame that contains the
 rownames</p>
+<pre class="r"><code>USPE_data$Category &lt;- row.names(USPE_data)
+USPE_data</code></pre>
+<pre><code>##                      X1940  X1945 X1950 X1955 X1960            Category
+## Food and Tobacco    22.200 44.500 59.60  73.2 86.80    Food and Tobacco
+## Household Operation 10.500 15.500 29.00  36.5 46.20 Household Operation
+## Medical and Health   3.530  5.760  9.71  14.0 21.10  Medical and Health
+## Personal Care        1.040  1.980  2.45   3.4  5.40       Personal Care
+## Private Education    0.341  0.974  1.80   2.6  3.64   Private Education</code></pre>
 <p>Consider how this data isn’t tidy. Use the
 <code>pivot_longer()</code> function from last class to make the data
 tidy.</p>
+<pre class="r"><code>(tidy_uspe &lt;- pivot_longer(USPE_data, c(&quot;X1940&quot;,&quot;X1945&quot;, &quot;X1950&quot;,&quot;X1955&quot; ,&quot;X1960&quot;), names_to = &#39;year&#39;, values_to = &#39;expendture&#39;))</code></pre>
+<pre><code>## # A tibble: 25 × 3
+##    Category            year  expendture
+##    &lt;chr&gt;               &lt;chr&gt;      &lt;dbl&gt;
+##  1 Food and Tobacco    X1940       22.2
+##  2 Food and Tobacco    X1945       44.5
+##  3 Food and Tobacco    X1950       59.6
+##  4 Food and Tobacco    X1955       73.2
+##  5 Food and Tobacco    X1960       86.8
+##  6 Household Operation X1940       10.5
+##  7 Household Operation X1945       15.5
+##  8 Household Operation X1950       29  
+##  9 Household Operation X1955       36.5
+## 10 Household Operation X1960       46.2
+## # ℹ 15 more rows</code></pre>
 <p>How much money was spent on personal care in 1940?</p>
+<pre class="r"><code>tidy_uspe$expendture[tidy_uspe$year==&#39;X1940&#39; &amp; tidy_uspe$Category==&quot;Personal Care&quot;] </code></pre>
+<pre><code>## [1] 1.04</code></pre>
 <p>How much money was spent on Food and Tobacco in 1960?</p>
+<pre class="r"><code>tidy_uspe$expendture[tidy_uspe$year==&#39;X1960&#39; &amp; tidy_uspe$Category==&quot;Food and Tobacco&quot;] </code></pre>
+<pre><code>## [1] 86.8</code></pre>
 <p>What was the highest expenditure category in 1960?</p>
+<pre class="r"><code>tidy_uspe$Category[tidy_uspe$expendture == max(tidy_uspe$expendture[tidy_uspe$year==&#39;X1960&#39;])] </code></pre>
+<pre><code>## [1] &quot;Food and Tobacco&quot;</code></pre>
 <p>Define a function <code>lowest_category</code> that takes in a year
 as a parameter, and returns the lowest spending category of that
 year</p>
+<pre class="r"><code>lowest_category &lt;- function(years){
+  tidy_uspe$Category[tidy_uspe$expendture==min(tidy_uspe$expendture[tidy_uspe$year== years])]
+  
+}
+lowest_category(&#39;X1950&#39;)</code></pre>
+<pre><code>## [1] &quot;Private Education&quot;</code></pre>
 <p>Using your function, determine the lowest spending category of each
 year Hint: use the <code>sapply()</code> function to apply your function
 to a vector of years</p>
+<pre class="r"><code>sapply(tidy_uspe$year, lowest_category)</code></pre>
+<pre><code>##               X1940               X1945               X1950               X1955 
+## &quot;Private Education&quot; &quot;Private Education&quot; &quot;Private Education&quot; &quot;Private Education&quot; 
+##               X1960               X1940               X1945               X1950 
+## &quot;Private Education&quot; &quot;Private Education&quot; &quot;Private Education&quot; &quot;Private Education&quot; 
+##               X1955               X1960               X1940               X1945 
+## &quot;Private Education&quot; &quot;Private Education&quot; &quot;Private Education&quot; &quot;Private Education&quot; 
+##               X1950               X1955               X1960               X1940 
+## &quot;Private Education&quot; &quot;Private Education&quot; &quot;Private Education&quot; &quot;Private Education&quot; 
+##               X1945               X1950               X1955               X1960 
+## &quot;Private Education&quot; &quot;Private Education&quot; &quot;Private Education&quot; &quot;Private Education&quot; 
+##               X1940               X1945               X1950               X1955 
+## &quot;Private Education&quot; &quot;Private Education&quot; &quot;Private Education&quot; &quot;Private Education&quot; 
+##               X1960 
+## &quot;Private Education&quot;</code></pre>
 </div>
 
 
